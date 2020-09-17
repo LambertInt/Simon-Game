@@ -2,6 +2,11 @@ const start = document.querySelector("#start");
 
 const state = document.querySelector("#state");
 
+const sound1 = new Audio('sounds/a.wav');
+const sound2 = new Audio('sounds/d.wav');
+const sound3 = new Audio('sounds/e.wav');
+const sound4 = new Audio('sounds/g.wav');
+
 let red = document.querySelector("#up-left");
 let blue = document.querySelector("#up-right");
 let green = document.querySelector("#down-left");
@@ -11,22 +16,42 @@ let arr;
 let currentIndex = 0;
 let currentTimeOut = 0;
 
-const blinkTime = 300;  
-
-//To avoid some color bug when the user is spamming
-function resetColor() {
-  red.className = "circle darken";
-  blue.className = "circle darken";
-  green.className = "circle darken";
-  yellow.className = "circle darken";
-}
+const blinkTime = 300;
 
 //Make the selected color (a quarter of the circle) blink for the blinkTime (in ms)
 function blink(color) {
+  makeSound(color);
   color.className = "circle lighten";
   setTimeout(() => {
     color.className = "circle darken";
   }, blinkTime);
+}
+
+// Make a different sound for each color, this is called at the start of the blink,
+// The sound duration is the same as the blink duration.
+function makeSound(color) {
+  let soundClone;
+  switch (color) {
+    case red:
+      soundClone = sound1.cloneNode();
+      soundClone.play();
+      break;
+    case blue:
+      soundClone = sound2.cloneNode();
+      soundClone.play();
+      break;
+    case green:
+      soundClone = sound3.cloneNode();
+      soundClone.play();
+      break;
+    case yellow:
+      soundClone = sound4.cloneNode();
+      soundClone.play();
+      break;
+
+    default:
+      break;
+  }
 }
 
 //Input the max and it returns a random integer number between 0 and the max.
@@ -62,13 +87,13 @@ function readArray(arr) {
           blink(yellow);
         }, currentTimeOut);
         break;
-    
+
       default:
         break;
     }
     currentTimeOut += 350;
   });
-  
+
   setTimeout(() => {
     state.innerHTML = "Repeat the pattern";
   }, currentTimeOut);
@@ -77,7 +102,7 @@ function readArray(arr) {
 // Call when the start button is pressed, it begins the game by putting
 // a random number in arr and then call the readArray function, then it offers
 // the possibility for the player to click by calling addEvents.
-function startGame(){
+function startGame() {
   start.style.display = "none";
 
   arr = new Array();
@@ -92,7 +117,7 @@ function startGame(){
 
 // Add a random number in arr and read the sequence. Then the player can try to 
 // redo the sequence properly.
-function makeTurn(){
+function makeTurn() {
   arr.push(getRandomInt(4));
   readArray(arr);
 
@@ -105,31 +130,34 @@ function makeTurn(){
 // a different number is assign (0 for red, 1 for blue, 2 for green, 3 for yellow).
 // It analyzes what is the input of the player and either let him continue if he's correct
 // or end the game if he's wrong. 
-function checkInput(clicked){
-  if(clicked != arr[currentIndex]) {
+function checkInput(clicked) {
+  removeEvents();
+  if (clicked != arr[currentIndex]) {
     endGame();
-  } else{
-    if(currentIndex === arr.length-1) {
+  } else {
+    if (currentIndex === arr.length - 1) {
       currentIndex = 0;
       state.innerHTML = "Great !";
-      removeEvents();
       setTimeout(() => {
         makeTurn();
       }, 700);
     } else {
-      currentIndex ++;
+      // The player is correct and can play again after the blink effect.
+      currentIndex++;
+      setTimeout(() => {
+        addEvents();
+      }, blinkTime);
     }
   }
 }
 
 // Called when the player lose
-function endGame(){
+function endGame() {
   start.style.display = "block";
   start.innerText = "Try again ?";
   state.innerHTML = "You Lost ! 😟";
   currentIndex = 0;
   currentTimeOut = 0;
-  removeEvents();
 }
 
 // Add the events of checkInput and blink on each quarter of the circle so that the player can play.
@@ -138,7 +166,7 @@ function addEvents() {
   blue.addEventListener("click", () => checkInput(1));
   green.addEventListener("click", () => checkInput(2));
   yellow.addEventListener("click", () => checkInput(3));
-  
+
   red.addEventListener("click", () => blink(red));
   blue.addEventListener("click", () => blink(blue));
   green.addEventListener("click", () => blink(green));
@@ -165,4 +193,4 @@ function removeEvents() {
 }
 
 
-start.addEventListener("click",startGame);
+start.addEventListener("click", startGame);
