@@ -2,10 +2,10 @@ const start = document.querySelector("#start");
 
 const state = document.querySelector("#state");
 
-const sound1 = new Audio('sounds/a.wav');
-const sound2 = new Audio('sounds/d.wav');
-const sound3 = new Audio('sounds/e.wav');
-const sound4 = new Audio('sounds/g.wav');
+const sound1 = new Audio('sounds/1.wav');
+const sound2 = new Audio('sounds/2.wav');
+const sound3 = new Audio('sounds/3.wav');
+const sound4 = new Audio('sounds/4.wav');
 
 let red = document.querySelector("#up-left");
 let blue = document.querySelector("#up-right");
@@ -15,6 +15,7 @@ let yellow = document.querySelector("#down-right");
 let arr;
 let currentIndex = 0;
 let currentTimeOut = 0;
+let score = 0;
 
 const blinkTime = 300;
 
@@ -99,13 +100,14 @@ function readArray(arr) {
   }, currentTimeOut);
 }
 
-// Call when the start button is pressed, it begins the game by putting
-// a random number in arr and then call the readArray function, then it offers
+// Call when the start button is pressed, it begins the game by creating an array and initializing
+// the score, then put a random number in arr and then call the readArray function, then it offers
 // the possibility for the player to click by calling addEvents.
 function startGame() {
   start.style.display = "none";
 
-  arr = new Array();
+  arr = [];
+  score = 0;
 
   arr.push(getRandomInt(4));
   readArray(arr);
@@ -115,9 +117,11 @@ function startGame() {
   }, currentTimeOut);
 }
 
-// Add a random number in arr and read the sequence. Then the player can try to 
-// redo the sequence properly.
+// Add a random number in arr and read the sequence and iterate the score.
+// Then the player can try to redo the sequence properly.
 function makeTurn() {
+  score ++;
+
   arr.push(getRandomInt(4));
   readArray(arr);
 
@@ -154,8 +158,8 @@ function checkInput(clicked) {
 // Called when the player lose
 function endGame() {
   start.style.display = "block";
-  start.innerText = "Try again ?";
-  state.innerHTML = "You Lost ! 😟";
+  start.innerText = "You Lost ! Try again ?";
+  state.innerHTML = "";
   currentIndex = 0;
   currentTimeOut = 0;
 }

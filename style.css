@@ -9,18 +9,22 @@ body {
   background-color: lightgray;
   font-family: 'Montserrat', sans-serif;
   min-height: 100vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0;
 }
 
+h1 {
+ font-size: 40px;
+}
 
-.container {
+.container-circle {
   display: grid;
   grid-template-columns: 200px 200px;
   grid-template-rows: 200px 200px;
+  width: 200;
+  height: 200;
   margin: auto;
 }
 
@@ -32,13 +36,11 @@ body {
 
 #start {
   background-color: #d3d3d3;
-  position: absolute;
-  top: 20%;
+  padding: 0 6px;
 }
 
 #state {
-  position: absolute;
-  top: 30%;
+  padding: 2px;
 }
 
 #up-left {
