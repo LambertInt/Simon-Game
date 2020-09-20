@@ -16,6 +16,8 @@ let arr;
 let currentIndex = 0;
 let currentTimeOut = 0;
 let score = 0;
+let playSound = false;
+let soundVolume = 100;
 
 const blinkTime = 300;
 
@@ -158,8 +160,8 @@ function checkInput(clicked) {
 // Called when the player lose
 function endGame() {
   start.style.display = "block";
-  start.innerText = "You Lost ! Try again ?";
-  state.innerHTML = "";
+  state.innerHTML = "You Lost ! 😓 | Score : "+score;
+  start.innerText = "Try again ?";
   currentIndex = 0;
   currentTimeOut = 0;
 }
