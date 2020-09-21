@@ -1,6 +1,8 @@
 const start = document.querySelector("#start");
 const sound = document.querySelector("#sound");
 const state = document.querySelector("#state");
+const sliderContainer = document.querySelector("#slide-container");
+const slider = document.querySelector("#slider");
 
 const sound1 = new Audio('sounds/1.wav');
 const sound2 = new Audio('sounds/2.wav');
@@ -17,7 +19,7 @@ let currentIndex = 0;
 let currentTimeOut = 0;
 let score = 0;
 let playSound = false;
-let soundVolume = 100;
+let soundVolume = 50;
 
 const blinkTime = 300;
 
@@ -30,13 +32,22 @@ function blink(color) {
   }, blinkTime);
 }
 
+// Turn the sound on / off
 function turnSound() {
   if(playSound) {
     sound.src = "images/mute.png";
+    sliderContainer.style.display = "none";
   } else if (!playSound){
     sound.src = "images/volume.png";
+    sliderContainer.style.display = "block";
   }
   playSound = !playSound;
+}
+
+// The volume of the sound is choosed by the user using a sliderContainer.
+function makeVolume() {
+  soundVolume = slider.value;
+  console.log(soundVolume);
 }
 
 // Make a different sound for each color, this is called at the start of the blink,
@@ -47,24 +58,22 @@ function makeSound(color) {
     switch (color) {
       case red:
         soundClone = sound1.cloneNode();
-        soundClone.play();
         break;
       case blue:
         soundClone = sound2.cloneNode();
-        soundClone.play();
         break;
       case green:
         soundClone = sound3.cloneNode();
-        soundClone.play();
         break;
       case yellow:
         soundClone = sound4.cloneNode();
-        soundClone.play();
         break;
 
       default:
         break;
     }
+    soundClone.volume = soundVolume / 100 ;
+    soundClone.play();
   }
 }
 
@@ -209,5 +218,6 @@ function removeEvents() {
   yellow = newYellow;
 }
 
+slider.addEventListener("input", makeVolume);
 sound.addEventListener("click", turnSound);
 start.addEventListener("click", startGame);

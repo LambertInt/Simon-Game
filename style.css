@@ -20,6 +20,7 @@ h1 {
  padding-bottom: 90px;
 }
 
+
 .container-circle {
   display: grid;
   grid-template-columns: 200px 200px;
@@ -44,7 +45,15 @@ h1 {
   height: 64;
   position: absolute;
   top: 25px;
-  right: 25px;
+  left: 25px;
+}
+
+#slide-container {
+  /* The display is hidden at the start  because by default the sound is muted */
+  display: none; 
+  position: absolute;
+  top: 30px;
+  left: 65px;
 }
 
 #start {
