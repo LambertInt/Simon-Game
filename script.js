@@ -1,5 +1,5 @@
 const start = document.querySelector("#start");
-
+const sound = document.querySelector("#sound");
 const state = document.querySelector("#state");
 
 const sound1 = new Audio('sounds/1.wav');
@@ -30,30 +30,41 @@ function blink(color) {
   }, blinkTime);
 }
 
+function turnSound() {
+  if(playSound) {
+    sound.src = "images/mute.png";
+  } else if (!playSound){
+    sound.src = "images/volume.png";
+  }
+  playSound = !playSound;
+}
+
 // Make a different sound for each color, this is called at the start of the blink,
 // The sound duration is the same as the blink duration.
 function makeSound(color) {
-  let soundClone;
-  switch (color) {
-    case red:
-      soundClone = sound1.cloneNode();
-      soundClone.play();
-      break;
-    case blue:
-      soundClone = sound2.cloneNode();
-      soundClone.play();
-      break;
-    case green:
-      soundClone = sound3.cloneNode();
-      soundClone.play();
-      break;
-    case yellow:
-      soundClone = sound4.cloneNode();
-      soundClone.play();
-      break;
+  if (playSound) {
+    let soundClone;
+    switch (color) {
+      case red:
+        soundClone = sound1.cloneNode();
+        soundClone.play();
+        break;
+      case blue:
+        soundClone = sound2.cloneNode();
+        soundClone.play();
+        break;
+      case green:
+        soundClone = sound3.cloneNode();
+        soundClone.play();
+        break;
+      case yellow:
+        soundClone = sound4.cloneNode();
+        soundClone.play();
+        break;
 
-    default:
-      break;
+      default:
+        break;
+    }
   }
 }
 
@@ -122,7 +133,7 @@ function startGame() {
 // Add a random number in arr and read the sequence and iterate the score.
 // Then the player can try to redo the sequence properly.
 function makeTurn() {
-  score ++;
+  score++;
 
   arr.push(getRandomInt(4));
   readArray(arr);
@@ -160,7 +171,7 @@ function checkInput(clicked) {
 // Called when the player lose
 function endGame() {
   start.style.display = "block";
-  state.innerHTML = "You Lost ! 😓 | Score : "+score;
+  state.innerHTML = "You Lost ! 😓 | Score : " + score;
   start.innerText = "Try again ?";
   currentIndex = 0;
   currentTimeOut = 0;
@@ -198,5 +209,5 @@ function removeEvents() {
   yellow = newYellow;
 }
 
-
+sound.addEventListener("click", turnSound);
 start.addEventListener("click", startGame);
